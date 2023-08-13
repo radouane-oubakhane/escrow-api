@@ -1,8 +1,26 @@
 import express from 'express';
+import mongoose from 'mongoose';
 import escrowsRouter from './routes/escrows';
 
 
+// Connect to MongoDB
+const MONGO_URI = 'mongodb://localhost:27017';
 
+async function connectToMongoDB() {
+    try {
+        await mongoose.connect(MONGO_URI);
+        console.log('Connected to MongoDB');
+    } catch (error) {
+        console.error('Error connecting to MongoDB: ', error);
+    }
+}
+
+connectToMongoDB();
+
+ 
+
+// App setup
+const PORT = 8000;
 const app = express();
 
 app.use(express.json());
@@ -15,4 +33,6 @@ app.get('/', (request, response) => {
 });
 
 
-app.listen(8000, () => console.log('Server is running'));
+
+
+app.listen(PORT, () => console.log('Server is running'));
