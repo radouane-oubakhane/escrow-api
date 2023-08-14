@@ -4,7 +4,7 @@ import escrowsRouter from './routes/escrows';
 
 
 // Connect to MongoDB
-const MONGO_URI = 'mongodb://localhost:27017';
+const MONGO_URI = 'mongodb://localhost:27017/escrow';
 
 async function connectToMongoDB() {
     try {
@@ -35,4 +35,4 @@ app.get('/', (request, response) => {
 
 
 
-app.listen(PORT, () => console.log('Server is running'));
+app.listen(PORT, () => console.log('Server is running on port ', PORT));
