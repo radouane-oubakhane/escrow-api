@@ -82,7 +82,7 @@ escrowsRouter.post('/', async (request, response) => {
 
 
 // Approve an escrow    
-escrowsRouter.put('/approve/:id', async (request, response) => {
+escrowsRouter.patch('/:id', async (request, response) => {
     try {
         const id = request.params.id;
         const approvedTimestamp = Date.now();

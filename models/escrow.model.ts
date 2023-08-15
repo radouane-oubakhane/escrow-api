@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 
 const escrowSchema = new mongoose.Schema({
+    address: String,
     arbiter: String,
     beneficiary: String,
     depositor: String,
