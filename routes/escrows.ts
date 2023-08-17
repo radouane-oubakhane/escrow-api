@@ -63,11 +63,11 @@ escrowsRouter.get('/arbiter/:arbiter', async (request, response) => {
 // create a new escrow
 escrowsRouter.post('/', async (request, response) => {
     try {
-        const { arbiter, beneficiary, depositor, amount } = request.body as CreateEscrowDTO;
+        const {address, arbiter, beneficiary, depositor, amount } = request.body as CreateEscrowDTO;
         const timestamp = Date.now();
         const approvedTimestamp = null;
         const isApproved = false;
-        const newEscrow = new Escrow({ arbiter, beneficiary, depositor, amount, timestamp, isApproved, approvedTimestamp });
+        const newEscrow = new Escrow({ address, arbiter, beneficiary, depositor, amount, timestamp, isApproved, approvedTimestamp });
         const savedEscrow = await newEscrow.save();
         console.log('Escrow saved: ', savedEscrow);
         return response.status(201).json(savedEscrow);
@@ -82,16 +82,21 @@ escrowsRouter.post('/', async (request, response) => {
 
 
 // Approve an escrow    
-escrowsRouter.patch('/:id', async (request, response) => {
+escrowsRouter.patch('/:address', async (request, response) => {
     try {
-        const id = request.params.id;
-        const approvedTimestamp = Date.now();
-        const isApproved = true;
-        const updatedEscrow = await Escrow.findByIdAndUpdate(id, { approvedTimestamp, isApproved }, { new: true });
-        console.log('Escrow updated: ', updatedEscrow);
+        const address = request.params.address;
+        // find by address and update approvedTimestamp and isApproved
+        const update = {
+            $set: {
+              approvedTimestamp: Date.now(), 
+              isApproved: true
+            }
+          };
+        const updatedEscrow = await Escrow.findOneAndUpdate({ address: address }, update, { returnOriginal: false });
+        console.log('Escrow Approved: ', updatedEscrow);
         return response.status(200).json(updatedEscrow);
     } catch (error) {
-        console.log('Error in PUT /escrows/approve/:id: ', error);
+        console.log('Error in PATCH /escrows/:address: ', error);
         return response.status(500).json({ error: error });
     }
 });

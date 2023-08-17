@@ -1,5 +1,5 @@
 export default interface CreateEscrowDTO {
-    address: String,
+    address: string,
     arbiter: string;
     beneficiary: string;
     depositor: string;
